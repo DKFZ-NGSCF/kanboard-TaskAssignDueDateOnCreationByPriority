@@ -1,8 +1,9 @@
 <?php
 
-namespace Kanboard\Action;
+namespace Kanboard\Plugin\TaskAssignDueDateOnCreationByPriority\Action;
 
 use Kanboard\Model\TaskModel;
+use Kanboard\Action\Base;
 
 /**
  * Set the due date of task
@@ -20,7 +21,7 @@ class TaskAssignDueDateOnCreationByPriority extends Base
      */
     public function getDescription()
     {
-        return t('Automatically set the due date on task creation based on the priority');
+        return t('Automatically set the due date on task creation based on priority');
     }
 
     /**
@@ -77,7 +78,7 @@ class TaskAssignDueDateOnCreationByPriority extends Base
     {
         $priority = (int)$this->getParam('priority');
 
-        if ($priority == $data['priority']) {
+        if ($priority == $data['task']['priority']) {
             $values = array(
                 'id' => $data['task_id'],
                 'date_due' => strtotime('+'.$this->getParam('duration').'days'),
@@ -85,7 +86,6 @@ class TaskAssignDueDateOnCreationByPriority extends Base
 
             return $this->taskModificationModel->update($values, false);
         }
-        return false;
     }
 
     /**
